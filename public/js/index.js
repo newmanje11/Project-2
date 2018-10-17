@@ -1,8 +1,8 @@
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+// var $exampleText = $("#example-text");
+// var $exampleDescription = $("#example-description");
+// var $submitBtn = $("#submit");
+// var $exampleList = $("#example-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -95,5 +95,22 @@ var handleDeleteBtnClick = function() {
 };
 
 // Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+// $submitBtn.on("click", handleFormSubmit);
+// $exampleList.on("click", ".delete", handleDeleteBtnClick);
+
+$(function() {
+  $("#submit").on("click", function(event) {
+    event.preventDefault();
+    console.log("here");
+    var band = $("#name").val();
+    console.log(band)
+    var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
+    $.ajax({
+      url: URL,
+      method: "GET" 
+  }).then(function (response) {
+    console.log(response);
+})
+    
+  });
+});

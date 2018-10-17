@@ -20,9 +20,14 @@ module.exports = function(app) {
     });
   });
 
-
+  // Brings us to the artist search page
   app.get("/artist", function(req, res) {
     res.render("artist");
+  });
+
+
+  app.get("/map", function(req, res) {
+    res.render("map");
   });
 
   // Render 404 page for any unmatched routes
