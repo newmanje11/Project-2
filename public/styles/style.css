@@ -43,3 +43,12 @@ margin-right: 0;
 .home-btn {
   margin-left: 0
 }
+
+#events {
+  color: white;
+  font-size: 25px;
+}
+
+.artistName  {
+  color: white;
+}
