@@ -6,7 +6,7 @@
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  saveExample: function (example) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -16,13 +16,13 @@ var API = {
       data: JSON.stringify(example)
     });
   },
-  getExamples: function() {
+  getExamples: function () {
     return $.ajax({
       url: "api/examples",
       type: "GET"
     });
   },
-  deleteExample: function(id) {
+  deleteExample: function (id) {
     return $.ajax({
       url: "api/examples/" + id,
       type: "DELETE"
@@ -31,9 +31,9 @@ var API = {
 };
 
 // refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+var refreshExamples = function () {
+  API.getExamples().then(function (data) {
+    var $examples = data.map(function (example) {
       var $a = $("<a>")
         .text(example.text)
         .attr("href", "/example/" + example.id);
@@ -61,7 +61,7 @@ var refreshExamples = function() {
 
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+var handleFormSubmit = function (event) {
   event.preventDefault();
 
   var example = {
@@ -74,7 +74,7 @@ var handleFormSubmit = function(event) {
     return;
   }
 
-  API.saveExample(example).then(function() {
+  API.saveExample(example).then(function () {
     refreshExamples();
   });
 
@@ -84,12 +84,12 @@ var handleFormSubmit = function(event) {
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
+var handleDeleteBtnClick = function () {
   var idToDelete = $(this)
     .parent()
     .attr("data-id");
 
-  API.deleteExample(idToDelete).then(function() {
+  API.deleteExample(idToDelete).then(function () {
     refreshExamples();
   });
 };
@@ -98,19 +98,43 @@ var handleDeleteBtnClick = function() {
 // $submitBtn.on("click", handleFormSubmit);
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-$(function() {
-  $("#submit").on("click", function(event) {
+
+//Click function to submit artist. Reach out to BandsInTown API to display top 10 concerts. 
+$(function () {
+  $("#submit").on("click", function (event) {
     event.preventDefault();
-    console.log("here");
+
     var band = $("#name").val();
     console.log(band)
     var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     $.ajax({
       url: URL,
-      method: "GET" 
-  }).then(function (response) {
-    console.log(response);
-})
+      method: "GET",
+  
+    }).then(function (response) {
+      // createDivs.addClass("cardRow");
+
+      var artistName = $("#name").val().trim();
+      $(".artistName").append(artistName);
+      console.log(artistName);
+
+      var createDivs = $("<div>").addClass("row");
+      // Loops through the events and adds them to the event rows
+      for (var i = 0; i < 10; i++) {
+        var data = `
+       
+        <p> ${response[i].datetime}<p>
+        <p> ${response[i].venue.city}<p>
+        <p> ${response[i].venue.name}<p>
     
+        `;
+        createDivs.append(data);
+
+        $("#events").append(createDivs);
+
+      };
+      $("#name").empty();
+
+    })
   });
 });
