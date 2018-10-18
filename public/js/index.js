@@ -99,7 +99,7 @@ var handleDeleteBtnClick = function () {
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
 
-//Click function to submit artist. Reach out to BandsInTown API to display top 10 concerts. 
+//Click function to send GET request to BandsInTown API. Dynamically isplay 12 concerts. 
 $(function () {
   $("#submit").on("click", function (event) {
     event.preventDefault();
@@ -118,22 +118,22 @@ $(function () {
       $(".artistName").append(artistName);
       console.log(artistName);
 
-      var createDivs = $("<div>").addClass("row");
+
       // Loops through the events and adds them to the event rows
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 12; i++) {
         var data = `
-       
-        <p> ${response[i].datetime}<p>
         <p> ${response[i].venue.city}<p>
         <p> ${response[i].venue.name}<p>
+        <p> ${response[i].datetime}<p>
     
         `;
+        var createDivs= $("<div>").addClass("col sm12 m3");
         createDivs.append(data);
 
         $("#events").append(createDivs);
-
       };
-      $("#name").empty();
+      //empty out input field after submission
+      document.getElementById("name").reset();
 
     })
   });
