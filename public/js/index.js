@@ -99,6 +99,7 @@ var handleDeleteBtnClick = function() {
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
 $(function() {
+  var geocoder = new google.maps.Geocoder();
   $("#submit").on("click", function(event) {
     event.preventDefault();
     console.log("here");
@@ -113,4 +114,10 @@ $(function() {
 })
     
   });
+  geocoder.geocode({ address: "charlotte" }, function (results) {
+    map.setCenter(results[0].geometry.location);
+    map.setZoom(15);
+    // then places the markers on the map
+    search();
+});
 });
