@@ -80,6 +80,10 @@ var handleFormSubmit = function(event) {
 
   $exampleText.val("");
   $exampleDescription.val("");
+
+  $('#submit').click(function() {
+    $('#password').val("");
+});
 };
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
