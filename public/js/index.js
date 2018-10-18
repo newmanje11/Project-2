@@ -99,9 +99,15 @@ var handleDeleteBtnClick = function () {
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
 
+$(function() {
+  var geocoder = new google.maps.Geocoder();
+  $("#submit").on("click", function(event) {
+
+
 //Click function to send GET request to BandsInTown API. Dynamically isplay 12 concerts. 
 $(function () {
   $("#submit").on("click", function (event) {
+
     event.preventDefault();
 
     var band = $("#name").val();
@@ -137,4 +143,10 @@ $(function () {
 
     })
   });
+  geocoder.geocode({ address: "charlotte" }, function (results) {
+    map.setCenter(results[0].geometry.location);
+    map.setZoom(15);
+    // then places the markers on the map
+    search();
+});
 });
