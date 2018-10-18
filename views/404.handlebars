@@ -7,12 +7,12 @@
     </div>
     <!-- Map -->
     <div class="row" id="mapRow">
-      <div class="container">
-        <div class="card col s12 m10" id="mapCard">
+      {{!-- <div class="container"> --}}
+        <div class="card col s12" sid="mapCard">
           <!-- Map Div -->
-          <div class="row" id="mapRow">
-            <div id="map" style="height:300px; width:300px;"></div>
-            <div id="listing">
+          <div class="row" style="height:800px;" id="mapRow">
+            <div id="map" style="height:100%; width:100%;"></div>
+            <div id="listing" style="display: none;">
               <table id="resultsTable">
                 <tbody id="results"></tbody>
               </table>
@@ -42,10 +42,13 @@
                   <td class="iw_attribute_name">Website:</td>
                   <td id="iw-website"></td>
                 </tr>
+                <tr>
+                  <td><i class="far fa-star"></i></td>
+                </tr>
               </table>
             </div>
           </div>
-        </div>
+        {{!-- </div> --}}
         <!-- Choose a Hotel Banner -->
       </div>
     </div>
