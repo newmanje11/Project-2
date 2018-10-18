@@ -121,14 +121,16 @@ $(function () {
   var geocoder = new google.maps.Geocoder();
   $("#submit").on("click", function (event) {
     event.preventDefault();
-    console.log("here");
+
     var band = $("#name").val();
     console.log(band)
     var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     $.ajax({
       url: URL,
-      method: "GET"
+      method: "GET",
+  
     }).then(function (response) {
+      // createDivs.addClass("cardRow");
       var date = response[0].datetime
       $.ajax({
         method: "GET",
@@ -137,8 +139,28 @@ $(function () {
         .then(function (date) {
           console.log(date);
         });
-    })
+      var artistName = $("#name").val().trim();
+      $(".artistName").append(artistName);
+      console.log(artistName);
 
+
+      // Loops through the events and adds them to the event rows
+      for (var i = 0; i < 12; i++) {
+        var data = `
+        <p> ${response[i].venue.city}<p>
+        <p> ${response[i].venue.name}<p>
+        <p> ${response[i].datetime}<p>
+    
+        `;
+        var createDivs= $("<div>").addClass("col sm12 m3");
+        createDivs.append(data);
+
+        $("#events").append(createDivs);
+      };
+      //empty out input field after submission
+      document.getElementById("name").reset();
+
+    })
   });
 
   geocoder.geocode({ address: "charlotte" }, function (results) {
