@@ -5,6 +5,25 @@
 // var $exampleList = $("#example-list");
 
 // The API object contains methods for each kind of request we'll make
+//firebase config
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyD937MlgcJiQIwVpX_UYcaqjUjn2O19vxk",
+  authDomain: "project-2-9f2fd.firebaseapp.com",
+  databaseURL: "https://project-2-9f2fd.firebaseio.com",
+  projectId: "project-2-9f2fd",
+  storageBucket: "project-2-9f2fd.appspot.com",
+  messagingSenderId: "518120117449"
+};
+
+firebase.initializeApp(config);
+
+
+var database = firebase.database();
+
+
+
 var API = {
   saveExample: function (example) {
     return $.ajax({
@@ -98,16 +117,9 @@ var handleDeleteBtnClick = function () {
 // $submitBtn.on("click", handleFormSubmit);
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-
-$(function() {
-  var geocoder = new google.maps.Geocoder();
-  $("#submit").on("click", function(event) {
-
-
-//Click function to send GET request to BandsInTown API. Dynamically isplay 12 concerts. 
 $(function () {
+  var geocoder = new google.maps.Geocoder();
   $("#submit").on("click", function (event) {
-
     event.preventDefault();
 
     var band = $("#name").val();
@@ -119,7 +131,14 @@ $(function () {
   
     }).then(function (response) {
       // createDivs.addClass("cardRow");
-
+      var date = response[0].datetime
+      $.ajax({
+        method: "GET",
+        url: "/band/date"
+      })
+        .then(function (date) {
+          console.log(date);
+        });
       var artistName = $("#name").val().trim();
       $(".artistName").append(artistName);
       console.log(artistName);
@@ -143,10 +162,64 @@ $(function () {
 
     })
   });
+
   geocoder.geocode({ address: "charlotte" }, function (results) {
     map.setCenter(results[0].geometry.location);
     map.setZoom(15);
     // then places the markers on the map
     search();
-});
+  });
+
+  $("#signup").on("click", function () {
+    event.preventDefault();
+    email = $("#idsignup").val();
+    password = $("#passsignup").val();
+    console.log(email);
+    console.log(password);
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function () {
+      window.location.href = "/artist"
+      number = email.indexOf("@");
+      user = email.slice(0, number);
+      localStorage.setItem("user", user);
+      database.ref(user).set({
+        events: "",
+        signon: true,
+        eventCount: 0,
+      });
+
+      database.ref("logstatus").set("on");
+    })
+      .catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+  });
+  
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log(user.uid);
+    }
+  });
+
+  $('#signin').on("click", function () {
+    email = $("#email").val();
+    password = $("#password").val();
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
+      window.location.href = "/artist"
+      number = email.indexOf("@");
+      user = email.slice(0, number);
+      localStorage.setItem("user", user);
+      database.ref("logstatus").set("on");
+    })
+      .catch(function (error) {
+        // Handle Errors here.
+        $("#error").text("Incorrect email or password")
+        $("#error").css({ "color": "red" })
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+  });  
 });
