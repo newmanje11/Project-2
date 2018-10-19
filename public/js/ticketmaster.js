@@ -1,16 +1,22 @@
 $(document).on("click", ".concerts", function () {
+    
     window.location.href = "/events"
     event.preventDefault();
     console.log("I've been clicked");
 
     var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=Fst7jzMSw05CNr3UdA1wrZAywnNi0A3j";
     var currEle = $(this)
+    var location = currEle[0].childNodes[1].innerText;
+    var state = location.slice(-2)
+    console.log(state)
+    $.post("/state",{sloc:state})
     console.log(currEle)
     var startDate = currEle[0].childNodes[5].dataset.sdate;
     var endDate = currEle[0].childNodes[5].dataset.edate;
     var limit = 10;
     console.log(currEle)
-    var city = currEle[0].childNodes[1].innerText;
+    var city = location.slice(0, -4)
+    console.log(city)
     // console.log(city);
 
 

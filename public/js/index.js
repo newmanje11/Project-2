@@ -13,10 +13,7 @@ var config = {
 
 firebase.initializeApp(config);
 
-
 var database = firebase.database();
-
-
 
 var API = {
   bandsApi: () => {
@@ -29,6 +26,7 @@ var API = {
 
     }).then((response) => {
       API.bandImage(band);
+      console.log(response)
       var artistName = $("#name").val().trim();
       $(".artistName").empty();
       $(".artistName").append(artistName);
@@ -43,8 +41,9 @@ var API = {
         console.log(dateresponse)
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
+        console.log(response[i].venue.region)
         var data = `
-          <p class= "city"> ${response[i].venue.city}<p>
+          <p class= "city""> ${response[i].venue.city} , ${response[i].venue.region}<p>
           <p> ${response[i].venue.name}<p>
           <p class ="dates" data-sdate = "${dateresponse.sdates[i]}" data-edate = "${dateresponse.edates[i]}"> ${dateresponse.dates[i]}<p>
           <p>${dateresponse.times[i]}<p>
@@ -59,6 +58,13 @@ var API = {
     })
   });
   },
+  yelpApi: () => {
+    $.post("/restaurants").then(response => console.log(response))
+    // var options = {
+    //   headers: {
+    //       "authorization": process.env.YELP_API_TOKEN
+    //   }
+  },
   bandImage: (band) => {$.post("/band/image",{bandname:band}).then((responseimage) => {
                Img = new Image();
                Img.src = responseimage
@@ -69,6 +75,7 @@ var API = {
     console.log(`here`)
     firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
       window.location.href = "/artist"
+      // API.yelpApi();
     })
       .catch(function (error) {
         // Handle Errors here.
