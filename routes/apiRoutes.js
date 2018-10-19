@@ -16,6 +16,7 @@ module.exports = function(app) {
     });
   });
   
+  //Moment
   app.get("/band/date", function(req, res) {
     console.log(`now here`)
     date =moment(req).format("L")

@@ -118,12 +118,14 @@ var handleDeleteBtnClick = function () {
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
 $(function () {
+
   var geocoder = new google.maps.Geocoder();
+
   $("#submit").on("click", function (event) {
     event.preventDefault();
 
     var band = $("#name").val();
-    console.log(band)
+
     var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
     $.ajax({
       url: URL,
@@ -131,28 +133,27 @@ $(function () {
   
     }).then(function (response) {
       // createDivs.addClass("cardRow");
-      var date = response[0].datetime
+      var date = `${response[0].datetime}Z`;
       $.ajax({
         method: "GET",
         url: "/band/date"
       })
         .then(function (date) {
-          console.log(date);
         });
       var artistName = $("#name").val().trim();
       $(".artistName").append(artistName);
-      console.log(artistName);
 
-
+  
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
         var data = `
-        <p> ${response[i].venue.city}<p>
+        <p class= "city"> ${response[i].venue.city}<p>
         <p> ${response[i].venue.name}<p>
         <p> ${response[i].datetime}<p>
     
         `;
-        var createDivs= $("<div>").addClass("col sm12 m3");
+        var createDivs= $("<div>").addClass("col sm12 m3 concerts");
+      
         createDivs.append(data);
 
         $("#events").append(createDivs);
@@ -199,7 +200,7 @@ $(function () {
   
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(user.uid);
+      // console.log(user.uid);
     }
   });
 
@@ -223,3 +224,7 @@ $(function () {
       });
   });  
 });
+
+
+
+
