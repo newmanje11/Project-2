@@ -13,7 +13,10 @@ var config = {
 
 firebase.initializeApp(config);
 
+
 var database = firebase.database();
+
+
 
 var API = {
   bandsApi: () => {
@@ -26,12 +29,16 @@ var API = {
 
     }).then((response) => {
       API.bandImage(band);
-      console.log(response)
       var artistName = $("#name").val().trim();
       $(".artistName").empty();
       $(".artistName").append(artistName);
       $("#events").empty();
       $("#name").val("");
+
+
+      // Makes artist search go away.
+      $(".main-box").css("display", "none");
+
       for (var i = 0; i< 12; i++) {
         dateArray.push(response[i].datetime);
       }
@@ -41,15 +48,25 @@ var API = {
         console.log(dateresponse)
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
-        console.log(response[i].venue.region)
         var data = `
-          <p class= "city""> ${response[i].venue.city} , ${response[i].venue.region}<p>
-          <p> ${response[i].venue.name}<p>
-          <p class ="dates" data-sdate = "${dateresponse.sdates[i]}" data-edate = "${dateresponse.edates[i]}"> ${dateresponse.dates[i]}<p>
-          <p>${dateresponse.times[i]}<p>
+          <div class="col sm4">
+           ${dateresponse.dates[i]} <br>
+          ${dateresponse.times[i]} 
+          </div>
+          <div class="col sm4 offset-s3">
+          ${response[i].venue.city} <br>
+          ${response[i].venue.name}
+          </div>
+
+          <div class="col sm4 offset-s2">
+          <button>Select Date:</button>
+          
+          </div>
+         
+          
 
           `;
-        var createDivs = $("<div>").addClass("col sm12 m3 concerts");
+        var createDivs = $("<div>").addClass("col s12");                                                                
         createDivs.append(data);
         $("#events").append(createDivs);
       };
@@ -57,13 +74,6 @@ var API = {
       document.getElementById("name").reset();
     })
   });
-  },
-  yelpApi: () => {
-    $.post("/restaurants").then(response => console.log(response))
-    // var options = {
-    //   headers: {
-    //       "authorization": process.env.YELP_API_TOKEN
-    //   }
   },
   bandImage: (band) => {$.post("/band/image",{bandname:band}).then((responseimage) => {
                Img = new Image();
@@ -75,7 +85,6 @@ var API = {
     console.log(`here`)
     firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
       window.location.href = "/artist"
-      // API.yelpApi();
     })
       .catch(function (error) {
         // Handle Errors here.
