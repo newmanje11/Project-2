@@ -16,8 +16,9 @@ module.exports = function(app) {
     });
   });
   
-  app.get("/band/date", function(req, res) {
+  app.post("/band/date", function(req, res) {
     console.log(`now here`)
+    console.log(req)
     // const formattedDates = moment(req).format("L");
     // // console.log(req)
     // // req.forEach(index => {
@@ -25,7 +26,7 @@ module.exports = function(app) {
     // // });
     // console.log(req.body)
     console.log(req)
-    date =moment(req).format("L")
+    date = moment(req).format("L")
     res.json(date);
   });
 

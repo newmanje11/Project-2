@@ -46,7 +46,7 @@ var API = {
       }
       console.log(dateArray)
       $.ajax({
-        method: "GET",
+        method: "POST",
         url: "/band/date",
         data:   dateArray,
       })
