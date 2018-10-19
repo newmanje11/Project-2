@@ -1,12 +1,16 @@
 var db = require("../models");
 var moment = require("moment");
 var keys = require("../keys.js");
-
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
-
+var fetchUrl = require("fetch").fetchUrl;
+var state;
 module.exports = function(app) {
   // Get all examples
+  app.post("/state", function(req, res) {
+    state = req.body.sloc;
+  });
+
   app.get("/api/examples", function(req, res) {
     db.Example.findAll({}).then(function(dbExamples) {
       res.json(dbExamples);
@@ -39,6 +43,31 @@ module.exports = function(app) {
     res.json(artistPic)
     })
   })
+
+  app.post("/restaurants", function(req,res) {
+    var options = {
+      headers: {
+          "authorization": process.env.YELP_API_TOKEN
+      }
+  }
+  console.log (options)
+var foodtype = `japanese`
+    fetchUrl(`https://api.yelp.com/v3/businesses/search?term=${foodtype}+food&location=charlotte_nc`, options, function (error, meta, body) {
+      var obj = JSON.parse(body);
+      for (i=0; i<10; i++) {
+      var img = obj.businesses[i].image_url;
+      var name = obj.businesses[i].name;
+      var yelpUrl = obj.businesses[i].url;
+      var rating = obj.businesses[i].rating;
+      var street = obj.businesses[i].location.address1;
+      var city = obj.businesses[i].location.city;
+      var phone = obj.businesses[i].display_phone;
+      // console.log(obj.businesses[i])
+      console.log(img, name, yelpUrl, rating, street, city)
+    }
+              // var result = obj.businesses[0];
+})
+  })
   app.post("/band/date", function(req, res) {
     console.log(`now here`)
     console.log(req.body['[]'])
@@ -53,10 +82,6 @@ module.exports = function(app) {
       endDates.push(moment(index).utc().add(1, 'M').format());
       startDates.push(moment(index).utc().subtract(1, 'M').format());
     });
-
-    // console.log(req.body)
-    // console.log(req)
-    // date = moment(req).format("L")
     res.json({
       dates: formattedDates,
       times: formattedTimes,
