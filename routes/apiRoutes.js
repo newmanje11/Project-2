@@ -16,10 +16,17 @@ module.exports = function(app) {
     });
   });
   
-  //Moment
-  app.get("/band/date", function(req, res) {
+  app.post("/band/date", function(req, res) {
     console.log(`now here`)
-    date =moment(req).format("L")
+    console.log(req)
+    // const formattedDates = moment(req).format("L");
+    // // console.log(req)
+    // // req.forEach(index => {
+    // //   formattedDates.push(moment(index).format("L"));
+    // // });
+    // console.log(req.body)
+    console.log(req)
+    date = moment(req).format("L")
     res.json(date);
   });
 

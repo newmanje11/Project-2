@@ -11,7 +11,7 @@ $(document).on("click", ".concerts", function () {
     var city = currEle[0].childNodes[1].innerText;
     // console.log(city);
 
-
+    
     $.ajax({
         url: queryURL,
         method: "GET",
