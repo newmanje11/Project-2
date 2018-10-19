@@ -25,21 +25,68 @@ var database = firebase.database();
 
 
 var API = {
-  saveExample: function (example) {
-    return $.ajax({
-      headers: {
-        "Content-Type": "application/json"
-      },
-      type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
-    });
+  bandsApi: () => {
+    const band = $("#name").val();
+    console.log(band)
+    var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
+    $.ajax({
+      url: URL,
+      method: "GET",
+
+    }).then((response) => {
+      // createDivs.addClass("cardRow");
+      var date = response[0].datetime
+      $.ajax({
+        method: "GET",
+        url: "/band/date"
+      })
+        .then((date) => {
+          console.log(date);
+        });
+      var artistName = $("#name").val().trim();
+      $(".artistName").empty();
+      $(".artistName").append(artistName);
+      $("#events").empty();
+      // Loops through the events and adds them to the event rows
+      for (var i = 0; i < 12; i++) {
+        var data = `
+          <p> ${response[i].venue.city}<p>
+          <p> ${response[i].venue.name}<p>
+          <p> ${response[i].datetime}<p>
+          `;
+        var createDivs = $("<div>").addClass("col sm12 m3");
+        createDivs.append(data);
+        $("#events").append(createDivs);
+      };
+      //empty out input field after submission
+      document.getElementById("name").reset();
+    })
   },
-  getExamples: function () {
-    return $.ajax({
-      url: "api/examples",
-      type: "GET"
-    });
+  signIn: (email, password) => {
+    console.log(`here`)
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
+      window.location.href = "/artist"
+    })
+      .catch(function (error) {
+        // Handle Errors here.
+        $("#error").text("Incorrect email or password")
+        $("#error").css({ "color": "red" })
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      })
+  },
+  createUser: (email, password) => {
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
+      window.location.href = "/artist"
+    })
+      .catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+
   },
   deleteExample: function (id) {
     return $.ajax({
@@ -77,30 +124,6 @@ var refreshExamples = function () {
     $exampleList.append($examples);
   });
 };
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function (event) {
-  event.preventDefault();
-
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
-
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function () {
-    refreshExamples();
-  });
-
-  $exampleText.val("");
-  $exampleDescription.val("");
-};
-
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
 var handleDeleteBtnClick = function () {
@@ -117,50 +140,11 @@ var handleDeleteBtnClick = function () {
 // $submitBtn.on("click", handleFormSubmit);
 // $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-$(function () {
+$(() => {
   var geocoder = new google.maps.Geocoder();
   $("#submit").on("click", function (event) {
     event.preventDefault();
-
-    var band = $("#name").val();
-    console.log(band)
-    var URL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp";
-    $.ajax({
-      url: URL,
-      method: "GET",
-  
-    }).then(function (response) {
-      // createDivs.addClass("cardRow");
-      var date = response[0].datetime
-      $.ajax({
-        method: "GET",
-        url: "/band/date"
-      })
-        .then(function (date) {
-          console.log(date);
-        });
-      var artistName = $("#name").val().trim();
-      $(".artistName").append(artistName);
-      console.log(artistName);
-
-
-      // Loops through the events and adds them to the event rows
-      for (var i = 0; i < 12; i++) {
-        var data = `
-        <p> ${response[i].venue.city}<p>
-        <p> ${response[i].venue.name}<p>
-        <p> ${response[i].datetime}<p>
-    
-        `;
-        var createDivs= $("<div>").addClass("col sm12 m3");
-        createDivs.append(data);
-
-        $("#events").append(createDivs);
-      };
-      //empty out input field after submission
-      document.getElementById("name").reset();
-
-    })
+    API.bandsApi();
   });
 
   geocoder.geocode({ address: "charlotte" }, function (results) {
@@ -170,56 +154,23 @@ $(function () {
     search();
   });
 
-  $("#signup").on("click", function () {
+  $("#signup").on("click", () => {
     event.preventDefault();
     email = $("#idsignup").val();
     password = $("#passsignup").val();
-    console.log(email);
-    console.log(password);
-    firebase.auth().createUserWithEmailAndPassword(email, password).then(function () {
-      window.location.href = "/artist"
-      number = email.indexOf("@");
-      user = email.slice(0, number);
-      localStorage.setItem("user", user);
-      database.ref(user).set({
-        events: "",
-        signon: true,
-        eventCount: 0,
-      });
-
-      database.ref("logstatus").set("on");
-    })
-      .catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-  });
-  
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      console.log(user.uid);
-    }
+    API.createUser(email, password);
   });
 
-  $('#signin').on("click", function () {
+  $('#signin').on("click", () => {
     email = $("#email").val();
     password = $("#password").val();
-    firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
-      window.location.href = "/artist"
-      number = email.indexOf("@");
-      user = email.slice(0, number);
-      localStorage.setItem("user", user);
-      database.ref("logstatus").set("on");
-    })
-      .catch(function (error) {
-        // Handle Errors here.
-        $("#error").text("Incorrect email or password")
-        $("#error").css({ "color": "red" })
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-  });  
+    API.signIn(email, password);
+  });
+});
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    console.log(user.uid);
+    localStorage.setItem("user", user.uid);
+  }
 });

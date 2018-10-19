@@ -249,3 +249,10 @@ function buildIWContent(place) {
     document.getElementById('iw-website-row').style.display = 'none';
   }
 }
+
+
+$(document).on("click", ".favhotel", function () {
+  $("iw-address").text();
+  $("iw-website").text();
+  $("#iw-phone").text();
+})
