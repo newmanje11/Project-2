@@ -56,11 +56,11 @@ var API = {
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
         var data = `
-          <p> ${response[i].venue.city}<p>
+          <pp class= "city"> ${response[i].venue.city}<p>
           <p> ${response[i].venue.name}<p>
           <p> ${response[i].datetime}<p>
           `;
-        var createDivs = $("<div>").addClass("col sm12 m3");
+        var createDivs = $("<div>").addClass("col sm12 m3 concerts");
         createDivs.append(data);
         $("#events").append(createDivs);
       };
@@ -148,6 +148,7 @@ var handleDeleteBtnClick = function () {
 
 $(() => {
   var geocoder = new google.maps.Geocoder();
+
   $("#submit").on("click", function (event) {
     event.preventDefault();
     API.bandsApi();
