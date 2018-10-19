@@ -35,18 +35,28 @@ var API = {
 
     }).then((response) => {
       // createDivs.addClass("cardRow");
-      var date = response[0].datetime
-      $.ajax({
-        method: "GET",
-        url: "/band/date"
-      })
-        .then((date) => {
-          console.log(date);
-        });
+      var dateArray = [];
+      
       var artistName = $("#name").val().trim();
       $(".artistName").empty();
       $(".artistName").append(artistName);
       $("#events").empty();
+      for (var i = 0; i< 12; i++) {
+        dateArray.push(response[i].datetime);
+      }
+      return $.ajax({
+        type: "POST",
+        url: "api/examples",
+        data: JSON.stringify(dateArray)
+      });
+      $.ajax({
+        method: "GET",
+        url: "/band/date",
+        data:   dateArray,
+      })
+        .then((dateArray) => {
+          console.log(dateArray);
+        });
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
         var data = `
@@ -153,7 +163,7 @@ $(() => {
     // then places the markers on the map
     search();
   });
-
+//listeners
   $("#signup").on("click", () => {
     event.preventDefault();
     email = $("#idsignup").val();
@@ -166,6 +176,12 @@ $(() => {
     password = $("#password").val();
     API.signIn(email, password);
   });
+});
+
+$(document).on("click", ".favhotel", () => {
+  $("iw-address").text();
+  $("iw-website").text();
+  $("#iw-phone").text();
 });
 
 firebase.auth().onAuthStateChanged((user) => {

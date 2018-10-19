@@ -251,8 +251,3 @@ function buildIWContent(place) {
 }
 
 
-$(document).on("click", ".favhotel", function () {
-  $("iw-address").text();
-  $("iw-website").text();
-  $("#iw-phone").text();
-})
