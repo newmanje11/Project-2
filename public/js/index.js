@@ -44,11 +44,7 @@ var API = {
       for (var i = 0; i< 12; i++) {
         dateArray.push(response[i].datetime);
       }
-      return $.ajax({
-        type: "POST",
-        url: "api/examples",
-        data: JSON.stringify(dateArray)
-      });
+      console.log(dateArray)
       $.ajax({
         method: "GET",
         url: "/band/date",
