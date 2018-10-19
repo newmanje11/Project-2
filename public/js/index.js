@@ -1,12 +1,6 @@
-// Get references to page elements
-// var $exampleText = $("#example-text");
-// var $exampleDescription = $("#example-description");
-// var $submitBtn = $("#submit");
-// var $exampleList = $("#example-list");
-
 // The API object contains methods for each kind of request we'll make
 //firebase config
-
+var dateArray = [];
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyD937MlgcJiQIwVpX_UYcaqjUjn2O19vxk",
@@ -34,31 +28,27 @@ var API = {
       method: "GET",
 
     }).then((response) => {
-      // createDivs.addClass("cardRow");
-      var dateArray = [];
-      
+      API.bandImage(band);
       var artistName = $("#name").val().trim();
       $(".artistName").empty();
       $(".artistName").append(artistName);
       $("#events").empty();
+      $("#name").val("");
       for (var i = 0; i< 12; i++) {
         dateArray.push(response[i].datetime);
       }
-      console.log(dateArray)
-      $.ajax({
-        method: "POST",
-        url: "/band/date",
-        data:   dateArray,
-      })
-        .then((dateArray) => {
-          console.log(dateArray);
-        });
+      
+      $.post("/band/date",{'':dateArray})
+        .then((dateresponse) => {
+        console.log(dateresponse)
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
         var data = `
-          <pp class= "city"> ${response[i].venue.city}<p>
+          <p class= "city"> ${response[i].venue.city}<p>
           <p> ${response[i].venue.name}<p>
-          <p> ${response[i].datetime}<p>
+          <p class ="dates" data-sdate = "${dateresponse.sdates[i]}" data-edate = "${dateresponse.edates[i]}"> ${dateresponse.dates[i]}<p>
+          <p>${dateresponse.times[i]}<p>
+
           `;
         var createDivs = $("<div>").addClass("col sm12 m3 concerts");
         createDivs.append(data);
@@ -67,7 +57,14 @@ var API = {
       //empty out input field after submission
       document.getElementById("name").reset();
     })
+  });
   },
+  bandImage: (band) => {$.post("/band/image",{bandname:band}).then((responseimage) => {
+               Img = new Image();
+               Img.src = responseimage
+               $(".bandimg").html(Img)
+             }
+  )},
   signIn: (email, password) => {
     console.log(`here`)
     firebase.auth().signInWithEmailAndPassword(email, password).then(function () {

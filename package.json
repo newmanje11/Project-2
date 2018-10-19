@@ -16,8 +16,10 @@
     "express-handlebars": "^3.0.0",
     "moment": "^2.22.2",
     "mysql2": "^1.5.3",
+    "node-spotify-api": "^1.0.7",
     "nodemon": "^1.18.4",
-    "sequelize": "^4.38.0"
+    "sequelize": "^4.38.0",
+    "spotify": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
