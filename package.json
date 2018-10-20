@@ -14,25 +14,13 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "handlebars": "^4.0.12",
     "mysql2": "^1.6.1",
-    "sequelize": "^4.39.1"
-=======
+    "sequelize": "^4.39.1",
     "moment": "^2.22.2",
-    "mysql2": "^1.5.3",
-    "sequelize": "^4.38.0"
->>>>>>> b5294a47f2ce35303b75fc1565c0183ed4073ac2
-=======
     "fetch": "^1.1.0",
-    "moment": "^2.22.2",
-    "mysql2": "^1.5.3",
     "node-spotify-api": "^1.0.7",
-    "nodemon": "^1.18.4",
-    "sequelize": "^4.38.0",
-    "spotify": "^0.3.0"
->>>>>>> bc2a161f07c54ea2234ad1d6a7681811be783c98
+    "nodemon": "^1.18.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",
