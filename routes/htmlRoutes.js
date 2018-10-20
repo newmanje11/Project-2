@@ -25,14 +25,15 @@ module.exports = function(app) {
     res.render("artist");
   });
 
-
-  app.get("/map", function(req, res) {
-    res.render("map");
+  app.get("/hotel", function(req, res) {
+    res.render("hotel");
+  });
+  app.get("/events", function(req, res) {
+    res.render("events");
   });
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");
   });
-
 };

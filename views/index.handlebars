@@ -54,7 +54,7 @@
         <div class="card sticky-action z-depth-4 card-panel hoverable" style=" margin : 0px; padding : 2px">
 
           <!--Login fields-->
-          <form ng-submit="authenticateUser()">
+          <form>
             <div class="card-content">
               <div class="row center-align">
                 <h2>
@@ -64,14 +64,14 @@
 
                 <div class="input-field col s12">
                   <i class="material-icons prefix center">account_circle</i>
-                  <input ng-model="user.email" id="email" type='email' name='email' class="validate left-align" required="true" placeholder="Email ID"
+                  <input id="email" type='email' name='email' class="validate left-align" required="true" placeholder="Email ID"
                   />
                   <label for="email" class="left-align">Enter your email
                   </label>
                 </div>
                 <div class="input-field col s12">
                   <i class="material-icons prefix center">dialpad</i>
-                  <input ng-model="user.password" type='password' name='password' id='password' class="validate" required="true" placeholder="Password"
+                  <input type='password' name='password' id='password' class="validate" required="true" placeholder="Password"
                   />
 
                   <label for="password" class=" left-align">Enter your password
