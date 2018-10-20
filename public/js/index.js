@@ -43,7 +43,7 @@ var API = {
       for (var i = 0; i < 12; i++) {
         console.log(response[i].venue.region)
         var data = `
-          <p class= "city""> ${response[i].venue.city} , ${response[i].venue.region}<p>
+          <p class= "city"> ${response[i].venue.city} , ${response[i].venue.region}<p>
           <p> ${response[i].venue.name}<p>
           <p class ="dates" data-sdate = "${dateresponse.sdates[i]}" data-edate = "${dateresponse.edates[i]}"> ${dateresponse.dates[i]}<p>
           <p>${dateresponse.times[i]}<p>
