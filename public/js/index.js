@@ -134,37 +134,6 @@ var refreshExamples = function () {
     $exampleList.append($examples);
   });
 };
-<<<<<<< HEAD
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function (event) {
-  event.preventDefault();
-
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
-
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function () {
-    refreshExamples();
-  });
-
-  $exampleText.val("");
-  $exampleDescription.val("");
-
-  $('#submit').click(function() {
-    $('#password').val("");
-});
-};
-
-=======
->>>>>>> bc2a161f07c54ea2234ad1d6a7681811be783c98
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
 var handleDeleteBtnClick = function () {
