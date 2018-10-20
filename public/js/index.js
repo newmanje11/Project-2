@@ -31,7 +31,7 @@ var API = {
       API.bandImage(band);
       var artistName = $("#name").val().trim();
       $(".artistName").empty();
-      $(".artistName").append(artistName);
+      $(".artistName").append("Checkout " + artistName.charAt(0).toUpperCase() + artistName.slice(1) + "'s Tour Dates");
       $("#events").empty();
       $("#name").val("");
 
@@ -49,6 +49,9 @@ var API = {
       // Loops through the events and adds them to the event rows
       for (var i = 0; i < 12; i++) {
         var data = `
+
+        <div class="divider"></div>
+  
           <div class="col sm4">
            ${dateresponse.dates[i]} <br>
           ${dateresponse.times[i]} 
@@ -60,8 +63,9 @@ var API = {
 
           <div class="col sm4 offset-s2">
           <button>Select Date:</button>
+
           
-          </div>
+          </div></div>
          
           
 
